@@ -13,8 +13,8 @@ export class AppController {
   }
 
   @Post('contact')
-  handleContact(@Body() contactDto: ContactDto) {
-    return this.appService.handleContact(contactDto);
+   async handleContact(@Body() contactDto: ContactDto) {
+    return await this.appService.handleContact(contactDto);
   }
 
 }
