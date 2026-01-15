@@ -14,13 +14,21 @@ export default function Contact() {
     e.preventDefault();
     setStatus('sending');
 
-    // TODO: conectar con el endpoint POST /api/contact cuando lo implementemos en el backend.
     try {
-      await new Promise((resolve) => setTimeout(resolve, 800)); // simulación
-      setStatus('sent');
-      setForm({ name: '', email: '', message: '' });
-    } catch (err) {
-      setStatus('error');
+        const response = await fetch( 'http://localhost:3001/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(form),
+        });
+
+        if (response.ok) {
+            setStatus('sent');
+            setForm({ name: '', email: '', message: '' });
+        } else {
+            setStatus('error');
+        }
+    } catch (error) {
+        setStatus('error');
     }
   };
 
@@ -90,7 +98,7 @@ export default function Contact() {
             </button>
 
             {status === 'sent' && (
-              <p className="text-green-400 text-sm">Mensaje enviado (simulado). Pronto conectaremos con el backend.</p>
+              <p className="text-green-400 text-sm">Mensaje enviado. Gracias por contactarme.</p>
             )}
             {status === 'error' && (
               <p className="text-red-400 text-sm">Ocurrió un error. Intenta de nuevo.</p>
